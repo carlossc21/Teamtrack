@@ -1,6 +1,7 @@
 "use client"
 import { useEffect } from 'react';
 import Sidebar from './components/Sidebar';
+import MainSection from './components/MainSection';
 
 export default function Home() {
   useEffect(()=>{
@@ -10,7 +11,7 @@ export default function Home() {
     <>
     <Sidebar/>
     <main className='main-section'>
-      Hola
+      <MainSection/>
     </main>
     </> 
   );
