@@ -1,44 +1,57 @@
+"use client"
 import Image from 'next/image'
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+const links = [
+    {
+        name: 'Dashboard',
+        href: '/',
+        iconClass: 'bi bi-house-door'
+    },
+    {
+        name: 'Departments',
+        href: '/departments',
+        iconClass: 'bi bi-suitcase-lg'
+    },
+    {
+        name: 'Employees',
+        href: '/employees',
+        iconClass: 'bi bi-people'
+    },
+    {
+        name: 'Manage',
+        href: '/manage',
+        iconClass: 'bi bi-tools'
+    },
+    {
+        name: 'Users',
+        href: '/users',
+        iconClass: 'bi bi-graph-up'
+    },
+]
 
 export default function Sidebar(){
+    const pathname = usePathname();
     return (
     <aside className="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar">
-        <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-            <svg className="bi me-2" width="40" height="32"><use xlinkHref="#bootstrap"></use></svg>
+        <Link href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+            {/* TODO: App Logo*/}
             <span className="fs-4">TeamTrack</span>
-        </a>
+        </Link>
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
-            <li className="nav-item">
-                <a href="#" className="nav-link active" aria-current="page">
-                <i className="bi bi-house-door"></i>&nbsp;
-                Dashboard
-                </a>
-            </li>
-            <li>
-                <a href="#" className="nav-link link-dark">
-                <i className="bi bi-suitcase-lg"></i>&nbsp;
-                Departments
-                </a>
-            </li>
-            <li>
-                <a href="#" className="nav-link link-dark">
-                <i className="bi bi-people"></i>&nbsp;
-                Employees
-                </a>
-            </li>
-            <li>
-                <a href="#" className="nav-link link-dark">
-                <i className="bi bi-tools"></i>&nbsp;
-                Manage
-                </a>
-            </li>
-            <li>
-                <a href="#" className="nav-link link-dark">
-                <i className="bi bi-graph-up"></i>&nbsp;
-                Users
-                </a>
-            </li>
+            
+            {links.map((link)=>{
+                return (
+                    <li key={link.name} className="nav-item">
+                        <Link href={link.href} className={`nav-link ${pathname==link.href ? 'active' : 'link-dark'}`} aria-current="page">
+                            <i className={link.iconClass}></i>&nbsp;
+                            {link.name}
+                        </Link>
+                    </li>
+                );
+            })}
         </ul>
         <hr />
         <div className="dropdown">
