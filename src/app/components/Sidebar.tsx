@@ -3,6 +3,7 @@ import axios from 'axios';
 import Image from 'next/image'
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const links = [
     {
@@ -42,6 +43,18 @@ export default function Sidebar(){
     }
 
     const pathname = usePathname();
+
+    const [userData, setUserData] = useState<User|undefined>(undefined)
+
+    useEffect(() => {
+        axios.get('/api/auth').then((response)=>{
+            setUserData(response.data.userData.user)
+        })
+        
+        
+    }, []);
+
+    
     return (
     <aside className="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar">
         <Link href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
@@ -67,11 +80,9 @@ export default function Sidebar(){
         <div className="dropdown">
             <a href="#" className="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
                 <Image src="https://github.com/mdo.png" alt="" width="32" height="32" className="rounded-circle me-2" />
-                <strong>mdo</strong>
+                <strong>{userData ? userData.name : ''}</strong>
             </a>
             <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                <li><a className="dropdown-item" href="#">Profile</a></li>
-                <li><hr className="dropdown-divider" /></li>
                 <li><button className="dropdown-item" onClick={() =>{logout()}}>Sign out</button></li>
             </ul>
         </div>

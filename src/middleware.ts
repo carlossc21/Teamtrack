@@ -8,7 +8,8 @@ export async function middleware(request: NextRequest){
     if(jwt){
         try{
             const {payload} = await jwtVerify(jwt.value, Buffer.from('secret')) 
-            userData = payload              
+            userData = payload 
+            
                 
         }catch(e){
             console.log(e);

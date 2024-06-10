@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import jwt from 'jsonwebtoken'
+import jwt, { verify } from 'jsonwebtoken'
 import { serialize } from "cookie";
 import cookies from 'js-cookie'
 import axios from "axios";
+import { jwtVerify } from "jose";
 
 export async function POST(req: Request){
     const {email, password} = await req.json();
@@ -52,8 +53,41 @@ export async function POST(req: Request){
     
 }
 
-export async function GET(req: Request){
-    const jwt = cookies.get('myTokenName');
-    console.log(jwt);
-    
+export async function GET(req: Request) {
+    const cookieHeader = req.headers.get('cookie');
+    let userData;
+
+    if (cookieHeader) {
+        const cookies = cookieHeader.split(';').reduce((acc, cookie) => {
+            const [name, value] = cookie.split('=').map(c => c.trim());
+            acc[name] = value;
+            return acc;
+        }, {} as { [key: string]: string });
+
+        const token = cookies['myTokenName'];
+        if (token) {
+            try {
+                userData = verify(token, Buffer.from('secret'));
+                //Se devuelve los datos obtenidos del token
+                return NextResponse.json({
+                    message: 'Token is valid',
+                    userData
+                }, {
+                    status: 200,
+                });
+            } catch (e) {
+                return NextResponse.json({
+                    message: 'Invalid token'
+                }, {
+                    status: 401,
+                });
+            }
+        }
+    }
+
+    return NextResponse.json({
+        message: 'No token found'
+    }, {
+        status: 401,
+    });
 }

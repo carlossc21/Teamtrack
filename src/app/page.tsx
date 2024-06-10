@@ -10,9 +10,9 @@ export default function Home() {
   return (
     <>
       <Sidebar />
-          <main className='main-section'>
-            <MainSection/>
-          </main>
+      <main className='main-section'>
+        
+      </main>
       
     </> 
   );
