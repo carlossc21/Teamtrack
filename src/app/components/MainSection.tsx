@@ -27,7 +27,7 @@ export default function MainSection() {
             <table className="table table-striped table-hover">
             <thead className="table-dark">
                 <tr>
-                <th scope="col">#</th>
+                <th scope="col"></th>
                 <th scope="col">Department</th>
                 <th scope="col">Record</th>
                 <th scope="col">Role</th>

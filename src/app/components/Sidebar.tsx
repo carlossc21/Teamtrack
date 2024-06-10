@@ -1,7 +1,8 @@
 "use client"
+import axios from 'axios';
 import Image from 'next/image'
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const links = [
     {
@@ -32,11 +33,20 @@ const links = [
 ]
 
 export default function Sidebar(){
+    const router = useRouter()
+    const logout = async () => {
+        const response = await axios.post('/api/auth/logout')
+        if(response.status === 200){
+            router.push('/login');
+        }
+    }
+
     const pathname = usePathname();
     return (
     <aside className="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar">
         <Link href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
             {/* TODO: App Logo*/}
+            <Image alt='logo' src='/teamtrack-logo.png' width={50} height={50}/> &nbsp; 
             <span className="fs-4">TeamTrack</span>
         </Link>
         <hr />
@@ -45,10 +55,10 @@ export default function Sidebar(){
             {links.map((link)=>{
                 return (
                     <li key={link.name} className="nav-item">
-                        <Link href={link.href} className={`nav-link ${pathname==link.href ? 'active' : 'link-dark'}`} aria-current="page">
+                        <a href={link.href} className={`nav-link ${pathname==link.href ? 'active' : 'link-dark'}`} aria-current="page">
                             <i className={link.iconClass}></i>&nbsp;
                             {link.name}
-                        </Link>
+                        </a>
                     </li>
                 );
             })}
@@ -60,11 +70,9 @@ export default function Sidebar(){
                 <strong>mdo</strong>
             </a>
             <ul className="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                <li><a className="dropdown-item" href="#">New project...</a></li>
-                <li><a className="dropdown-item" href="#">Settings</a></li>
                 <li><a className="dropdown-item" href="#">Profile</a></li>
                 <li><hr className="dropdown-divider" /></li>
-                <li><a className="dropdown-item" href="#">Sign out</a></li>
+                <li><button className="dropdown-item" onClick={() =>{logout()}}>Sign out</button></li>
             </ul>
         </div>
   </aside>

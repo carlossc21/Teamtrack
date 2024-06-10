@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import './globals.css'
-import Sidebar from "./components/Sidebar";
+import Sidebar from './components/Sidebar';
+import axios from "axios";
 
 export const metadata: Metadata = {
   title: "Teamtrack",
@@ -18,11 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Sidebar/>
-        <main className='main-section'>
         {children}
-        </main>
-        
       </body>
     </html>
   );
